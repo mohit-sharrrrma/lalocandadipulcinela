@@ -1,6 +1,170 @@
-import { Menu, MapPin, Phone, Clock, Star, ChevronRight, Instagram, Facebook } from 'lucide-react';
+import { Menu, MapPin, Phone, Clock, Star, ChevronRight, Instagram, Facebook, Globe } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
+
+type Language = 'fr' | 'en' | 'it';
+
+const translations = {
+  fr: {
+    nav: { menu: "Menu", reviews: "Avis", contact: "Contact", reserve: "Réserver" },
+    hero: {
+      title: "L'Authentique Pizza Napolitaine à Paris",
+      subtitle: "Découvrez les saveurs de l'Italie dans une ambiance chaleureuse et conviviale.",
+      menuBtn: "Voir le Menu",
+      reserveBtn: "Réserver une table"
+    },
+    menu: {
+      title: "Notre Carte",
+      subtitle: "Des ingrédients frais et de qualité, importés directement d'Italie.",
+      categories: {
+        antipasti: "Antipasti",
+        salades: "Salades",
+        focacce: "Focacce",
+        pizzeRosse: "Pizze Rosse",
+        pizzeBianche: "Pizze Bianche",
+        pateIntegrale: "Pâte Intégrale",
+        dolci: "Dolci",
+        drinks: "Boissons"
+      }
+    },
+    reviews: {
+      title: "Ce que disent nos clients",
+      subtitle: "Découvrez les avis de ceux qui ont goûté à notre cuisine."
+    },
+    contact: {
+      title: "Venez nous rendre visite",
+      subtitle: "Votre restaurant italien de référence à Paris. Venez déguster nos pizzas authentiques et nos spécialités maison.",
+      address: "Adresse",
+      hours: "Horaires",
+      tueSun: "Mardi - Dimanche",
+      closedMon: "Fermé le Lundi",
+      contactUs: "Contact",
+      followUs: "Suivez-nous",
+      info: "Informations",
+      access: "Accès personnes à mobilité réduite",
+      terrace: "Terrasse disponible",
+      family: "Idéal pour les familles",
+      payments: "Paiements acceptés:",
+      quickLinks: "Liens Rapides",
+      reservations: "Réservations",
+      orderOnline: "Commander en ligne",
+      ourStory: "Notre Histoire",
+      events: "Nos événements",
+      legal: "Mentions légales",
+      privacy: "Protection des données"
+    },
+    footer: "La Locanda di Pulcinella. Tous droits réservés."
+  },
+  en: {
+    nav: { menu: "Menu", reviews: "Reviews", contact: "Contact", reserve: "Book a Table" },
+    hero: {
+      title: "Authentic Neapolitan Pizza in Paris",
+      subtitle: "Discover the flavors of Italy in a warm and friendly atmosphere.",
+      menuBtn: "View Menu",
+      reserveBtn: "Book a Table"
+    },
+    menu: {
+      title: "Our Menu",
+      subtitle: "Fresh, high-quality ingredients imported directly from Italy.",
+      categories: {
+        antipasti: "Starters",
+        salades: "Salads",
+        focacce: "Focaccia",
+        pizzeRosse: "Red Pizzas",
+        pizzeBianche: "White Pizzas",
+        pateIntegrale: "Whole Wheat Dough",
+        dolci: "Desserts",
+        drinks: "Drinks"
+      }
+    },
+    reviews: {
+      title: "What Our Customers Say",
+      subtitle: "Discover the reviews of those who have tasted our cuisine."
+    },
+    contact: {
+      title: "Come Visit Us",
+      subtitle: "Your go-to Italian restaurant in Paris. Come and taste our authentic pizzas and homemade specialties.",
+      address: "Address",
+      hours: "Opening Hours",
+      tueSun: "Tuesday - Sunday",
+      closedMon: "Closed on Mondays",
+      contactUs: "Contact Us",
+      followUs: "Follow Us",
+      info: "Information",
+      access: "Wheelchair accessible",
+      terrace: "Terrace available",
+      family: "Family friendly",
+      payments: "Accepted payments:",
+      quickLinks: "Quick Links",
+      reservations: "Reservations",
+      orderOnline: "Order Online",
+      ourStory: "Our Story",
+      events: "Our Events",
+      legal: "Legal Notice",
+      privacy: "Data Protection"
+    },
+    footer: "La Locanda di Pulcinella. All rights reserved."
+  },
+  it: {
+    nav: { menu: "Menu", reviews: "Recensioni", contact: "Contatti", reserve: "Prenota" },
+    hero: {
+      title: "L'Autentica Pizza Napoletana a Parigi",
+      subtitle: "Scopri i sapori dell'Italia in un'atmosfera calda e accogliente.",
+      menuBtn: "Vedi il Menu",
+      reserveBtn: "Prenota un tavolo"
+    },
+    menu: {
+      title: "Il Nostro Menu",
+      subtitle: "Ingredienti freschi e di alta qualità, importati direttamente dall'Italia.",
+      categories: {
+        antipasti: "Antipasti",
+        salades: "Insalate",
+        focacce: "Focacce",
+        pizzeRosse: "Pizze Rosse",
+        pizzeBianche: "Pizze Bianche",
+        pateIntegrale: "Impasto Integrale",
+        dolci: "Dolci",
+        drinks: "Bevande"
+      }
+    },
+    reviews: {
+      title: "Cosa dicono i nostri clienti",
+      subtitle: "Scopri le recensioni di chi ha assaggiato la nostra cucina."
+    },
+    contact: {
+      title: "Vieni a trovarci",
+      subtitle: "Il tuo ristorante italiano di riferimento a Parigi. Vieni a gustare le nostre pizze autentiche e le specialità della casa.",
+      address: "Indirizzo",
+      hours: "Orari",
+      tueSun: "Martedì - Domenica",
+      closedMon: "Chiuso il Lunedì",
+      contactUs: "Contattaci",
+      followUs: "Seguici",
+      info: "Informazioni",
+      access: "Accesso per disabili",
+      terrace: "Terrazza disponibile",
+      family: "Ideale per famiglie",
+      payments: "Pagamenti accettati:",
+      quickLinks: "Link Rapidi",
+      reservations: "Prenotazioni",
+      orderOnline: "Ordina Online",
+      ourStory: "La Nostra Storia",
+      events: "I Nostri Eventi",
+      legal: "Note legali",
+      privacy: "Protezione dei dati"
+    },
+    footer: "La Locanda di Pulcinella. Tutti i diritti riservati."
+  }
+};
+
+const translateTag = (tag: string, lang: Language) => {
+  const map: Record<string, Record<Language, string>> = {
+    "Végétarien": { fr: "Végétarien", en: "Vegetarian", it: "Vegetariano" },
+    "Piquant": { fr: "Piquant", en: "Spicy", it: "Piccante" },
+    "Végan": { fr: "Végan", en: "Vegan", it: "Vegano" }
+  };
+  return map[tag]?.[lang] || tag;
+};
 
 const menuData = {
   antipasti: [
@@ -76,6 +240,12 @@ const menuData = {
     { name: "Balanzone", description: "Citron, fraise, fruit de la passion, chantilly & coulis de fruits rouges (1 boule 3€, 2 boules 6€, Chantilly 1€)", price: "3,00 € - 6,00 €" }
   ],
   drinks: [
+    { 
+      name: "Aperol Spritz", 
+      description: "Aperol, Prosecco, eau gazeuse, tranche d'orange", 
+      price: "8,00 €",
+      image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop"
+    },
     { name: "Aperitivi", description: "Martini, Pastis, Bière Peroni, Kir, J&B, Jack Daniel's...", price: "4,00 € - 7,00 €" },
     { name: "Soft Drink", description: "Coca-Cola, Fanta, Ice Tea, Perrier, Jus de Fruits...", price: "4,00 € - 6,00 €" },
     { name: "Caffetteria", description: "Café espresso, cappuccino, thé...", price: "2,50 € - 4,50 €" },
@@ -130,16 +300,19 @@ const reviews = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('pizzeRosse');
+  const [lang, setLang] = useState<Language>('fr');
+
+  const t = translations[lang];
 
   const tabs = [
-    { id: 'antipasti', label: 'Antipasti' },
-    { id: 'salades', label: 'Salades' },
-    { id: 'focacce', label: 'Focacce' },
-    { id: 'pizzeRosse', label: 'Pizze Rosse' },
-    { id: 'pizzeBianche', label: 'Pizze Bianche' },
-    { id: 'pateIntegrale', label: 'Pâte Intégrale' },
-    { id: 'dolci', label: 'Dolci' },
-    { id: 'drinks', label: 'Boissons' },
+    { id: 'antipasti', label: t.menu.categories.antipasti },
+    { id: 'salades', label: t.menu.categories.salades },
+    { id: 'focacce', label: t.menu.categories.focacce },
+    { id: 'pizzeRosse', label: t.menu.categories.pizzeRosse },
+    { id: 'pizzeBianche', label: t.menu.categories.pizzeBianche },
+    { id: 'pateIntegrale', label: t.menu.categories.pateIntegrale },
+    { id: 'dolci', label: t.menu.categories.dolci },
+    { id: 'drinks', label: t.menu.categories.drinks },
   ];
 
   return (
@@ -152,16 +325,25 @@ export default function App() {
               <span className="font-serif text-2xl font-bold text-red-700 tracking-tight">La Locanda di Pulcinella</span>
             </div>
             <div className="hidden md:flex space-x-8 items-center">
-              <a href="#menu" className="text-stone-600 hover:text-red-700 font-medium transition-colors">Menu</a>
-              <a href="#reviews" className="text-stone-600 hover:text-red-700 font-medium transition-colors">Avis</a>
-              <a href="#contact" className="text-stone-600 hover:text-red-700 font-medium transition-colors">Contact</a>
+              <a href="#menu" className="text-stone-600 hover:text-red-700 font-medium transition-colors">{t.nav.menu}</a>
+              <a href="#reviews" className="text-stone-600 hover:text-red-700 font-medium transition-colors">{t.nav.reviews}</a>
+              <a href="#contact" className="text-stone-600 hover:text-red-700 font-medium transition-colors">{t.nav.contact}</a>
+              <div className="relative group flex items-center gap-1 cursor-pointer text-stone-600 hover:text-red-700 transition-colors">
+                <Globe className="w-4 h-4" />
+                <span className="font-medium uppercase">{lang}</span>
+                <div className="absolute top-full right-0 mt-2 w-24 bg-white rounded-lg shadow-lg border border-stone-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 overflow-hidden">
+                  <button onClick={() => setLang('fr')} className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 ${lang === 'fr' ? 'font-bold text-red-700' : 'text-stone-600'}`}>FR</button>
+                  <button onClick={() => setLang('en')} className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 ${lang === 'en' ? 'font-bold text-red-700' : 'text-stone-600'}`}>EN</button>
+                  <button onClick={() => setLang('it')} className={`w-full text-left px-4 py-2 text-sm hover:bg-stone-50 ${lang === 'it' ? 'font-bold text-red-700' : 'text-stone-600'}`}>IT</button>
+                </div>
+              </div>
               <a 
                 href="https://lalocandadipulcinella.com/fr/reservations" 
                 target="_blank"
                 rel="noreferrer"
                 className="bg-red-700 text-white px-6 py-2.5 rounded-full font-medium hover:bg-red-800 transition-colors shadow-sm"
               >
-                Réserver
+                {t.nav.reserve}
               </a>
             </div>
           </div>
@@ -186,16 +368,15 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6"
-          >
-            L'authentique saveur <br/><span className="text-red-500 italic">d'Italie à Paris</span>
-          </motion.h1>
+            dangerouslySetInnerHTML={{ __html: t.hero.title.replace('Paris', '<br/><span className="text-red-500 italic">Paris</span>') }}
+          />
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-lg md:text-xl text-stone-200 mb-10 max-w-2xl mx-auto font-light"
           >
-            Bienvenue chez La Locanda di Pulcinella, l'un des meilleurs restaurants de Paris. Découvrez une cuisine de qualité, rassemblant les plus délicieuses saveurs issues d'Italie.
+            {t.hero.subtitle}
           </motion.p>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -207,7 +388,7 @@ export default function App() {
               href="#menu" 
               className="bg-white text-stone-900 px-8 py-4 rounded-full font-semibold hover:bg-stone-100 transition-colors shadow-lg flex items-center justify-center"
             >
-              Découvrir le Menu
+              {t.hero.menuBtn}
             </a>
             <a 
               href="https://lalocandadipulcinella.com/fr/commandes" 
@@ -215,7 +396,7 @@ export default function App() {
               rel="noreferrer"
               className="bg-red-700 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-800 transition-colors shadow-lg flex items-center justify-center"
             >
-              Commander en ligne
+              {lang === 'fr' ? 'Commander en ligne' : lang === 'en' ? 'Order Online' : 'Ordina Online'}
             </a>
           </motion.div>
         </div>
@@ -225,7 +406,7 @@ export default function App() {
       <section id="reviews" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-4">Ce que disent nos clients</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-stone-900 mb-4">{t.reviews.title}</h2>
             <div className="w-24 h-1 bg-red-700 mx-auto"></div>
           </div>
           
@@ -271,8 +452,8 @@ export default function App() {
       <section id="menu" className="py-24 bg-stone-100">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-stone-900 mb-4">Notre Menu</h2>
-            <p className="text-stone-500 max-w-2xl mx-auto">Des ingrédients frais, une pâte préparée avec passion et le savoir-faire authentique italien.</p>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-stone-900 mb-4">{t.menu.title}</h2>
+            <p className="text-stone-500 max-w-2xl mx-auto">{t.menu.subtitle}</p>
           </div>
 
           {/* Menu Tabs */}
@@ -311,6 +492,16 @@ export default function App() {
                   {item.description && (
                     <p className="text-stone-500 text-sm leading-relaxed mb-2 pr-8">{item.description}</p>
                   )}
+                  {item.image && (
+                    <div className="mt-2 mb-3 rounded-xl overflow-hidden h-48 w-full">
+                      <img 
+                        src={item.image} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  )}
                   {item.tags && (
                     <div className="flex gap-2 mt-1">
                       {item.tags.map((tag: string, tIdx: number) => (
@@ -318,7 +509,7 @@ export default function App() {
                           tag === 'Végétarien' || tag === 'Végan' ? 'bg-green-100 text-green-800' : 
                           tag === 'Piquant' ? 'bg-orange-100 text-orange-800' : 'bg-stone-100 text-stone-800'
                         }`}>
-                          {tag}
+                          {translateTag(tag, lang)}
                         </span>
                       ))}
                     </div>
@@ -337,7 +528,7 @@ export default function App() {
             <div>
               <h3 className="font-serif text-2xl font-bold text-red-500 mb-6">La Locanda di Pulcinella</h3>
               <p className="text-stone-400 mb-6 leading-relaxed">
-                Votre restaurant italien de référence à Paris. Venez déguster nos pizzas authentiques et nos spécialités maison.
+                {t.contact.subtitle}
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center hover:bg-red-700 transition-colors">
@@ -350,7 +541,7 @@ export default function App() {
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Contact</h4>
+              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">{t.contact.contactUs}</h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-stone-400">
                   <MapPin className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
@@ -362,38 +553,46 @@ export default function App() {
                   <Phone className="w-5 h-5 text-red-500 shrink-0" />
                   <a href="tel:+33142230948" className="hover:text-white transition-colors">+33 1 42 23 09 48</a>
                 </li>
+                <li className="flex items-start gap-3 text-stone-400">
+                  <Clock className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p>{t.contact.tueSun}</p>
+                    <p>12:00 - 14:30, 19:00 - 22:30</p>
+                    <p className="text-red-400 mt-1">{t.contact.closedMon}</p>
+                  </div>
+                </li>
               </ul>
             </div>
             
             <div>
-              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Informations</h4>
+              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">{t.contact.info}</h4>
               <ul className="space-y-3 text-stone-400">
-                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> Accès personnes à mobilité réduite</li>
-                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> Terrasse disponible</li>
-                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> Idéal pour les familles</li>
+                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> {t.contact.access}</li>
+                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> {t.contact.terrace}</li>
+                <li className="flex items-center gap-2"><ChevronRight className="w-4 h-4 text-red-500"/> {t.contact.family}</li>
                 <li className="mt-4 pt-4 border-t border-stone-800">
-                  <span className="block text-sm text-stone-500 mb-2">Paiements acceptés:</span>
+                  <span className="block text-sm text-stone-500 mb-2">{t.contact.payments}</span>
                   <span className="text-sm">Cash, Visa, Ticket Restaurant, Mastercard, Carte de débit, Chèque</span>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">Liens Rapides</h4>
+              <h4 className="text-lg font-bold mb-6 uppercase tracking-wider">{t.contact.quickLinks}</h4>
               <ul className="space-y-3 text-stone-400">
-                <li><a href="https://lalocandadipulcinella.com/fr/reservations" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">Réservations</a></li>
-                <li><a href="https://lalocandadipulcinella.com/fr/commandes" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">Commander en ligne</a></li>
-                <li><a href="https://lalocandadipulcinella.com/fr/histoire" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">Notre Histoire</a></li>
-                <li><a href="https://lalocandadipulcinella.com/fr/evenements" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">Nos événements</a></li>
+                <li><a href="https://lalocandadipulcinella.com/fr/reservations" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">{t.contact.reservations}</a></li>
+                <li><a href="https://lalocandadipulcinella.com/fr/commandes" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">{t.contact.orderOnline}</a></li>
+                <li><a href="https://lalocandadipulcinella.com/fr/histoire" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">{t.contact.ourStory}</a></li>
+                <li><a href="https://lalocandadipulcinella.com/fr/evenements" target="_blank" rel="noreferrer" className="hover:text-red-400 transition-colors">{t.contact.events}</a></li>
               </ul>
             </div>
           </div>
           
           <div className="mt-16 pt-8 border-t border-stone-800 text-center text-stone-500 text-sm">
-            <p>&copy; {new Date().getFullYear()} La Locanda di Pulcinella. Tous droits réservés.</p>
+            <p>&copy; {new Date().getFullYear()} {t.footer}</p>
             <div className="flex justify-center gap-4 mt-4">
-              <a href="https://lalocandadipulcinella.com/fr/mentions-legales" className="hover:text-white">Mentions légales</a>
-              <a href="https://lalocandadipulcinella.com/fr/protection-des-donnees" className="hover:text-white">Protection des données</a>
+              <a href="https://lalocandadipulcinella.com/fr/mentions-legales" className="hover:text-white">{t.contact.legal}</a>
+              <a href="https://lalocandadipulcinella.com/fr/protection-des-donnees" className="hover:text-white">{t.contact.privacy}</a>
             </div>
           </div>
         </div>

@@ -22,7 +22,6 @@ const translations = {
         focacce: "Focacce",
         pizzeRosse: "Pizze Rosse",
         pizzeBianche: "Pizze Bianche",
-        pateIntegrale: "Pâte Intégrale",
         dolci: "Dolci",
         drinks: "Boissons"
       }
@@ -72,7 +71,6 @@ const translations = {
         focacce: "Focaccia",
         pizzeRosse: "Red Pizzas",
         pizzeBianche: "White Pizzas",
-        pateIntegrale: "Whole Wheat Dough",
         dolci: "Desserts",
         drinks: "Drinks"
       }
@@ -122,7 +120,6 @@ const translations = {
         focacce: "Focacce",
         pizzeRosse: "Pizze Rosse",
         pizzeBianche: "Pizze Bianche",
-        pateIntegrale: "Impasto Integrale",
         dolci: "Dolci",
         drinks: "Bevande"
       }
@@ -209,7 +206,8 @@ const menuData = {
     { name: "Burrata & Parma", description: "Sauce tomate, mozzarella, burrata 125gr, jambon de Parma, parmesan, tomate confites", price: "18,00 €" },
     { name: "Thon", description: "Sauce tomate, mozzarella, thon, câpres, olives noires, oignons rouges", price: "15,00 €" },
     { name: "Mascarpone", description: "sauce tomate, mozzarella, mascarpone, salami piquant, courgettes, artichaut, olives noires", price: "15,00 €" },
-    { name: "Salsiccia & funghi", description: "sauce tomate, mozzarella, saucisses, champignons, gorgonzola", price: "17,00 €" }
+    { name: "Salsiccia & funghi", description: "sauce tomate, mozzarella, saucisses, champignons, gorgonzola", price: "17,00 €" },
+    { name: "Vegana", description: "Sauce tomates, courgettes, poivrons, artichauts, champignons, roquette, tomates cerises, olives noires", price: "15,00 €", tags: ["Végan"] }
   ],
   pizzeBianche: [
     { name: "Quattro Fromaggi", description: "Mozzarella, gorgonzola, pecorino, parmesan", price: "15,00 €", tags: ["Végétarien"] },
@@ -219,10 +217,7 @@ const menuData = {
     { name: "Bianca", description: "Mozzarella, roquette, jambon de Parma, tomates cerises, parmesan", price: "17,00 €" },
     { name: "Pulcinella", description: "Crème de truffe, mozzarella, champignons, roquette, tomates cerises, parmesan, coppa", price: "17,00 €" },
     { name: "Truffata", description: "Crème de truffe, mozzarella, champignons, jambon blanc, œuf, roquette, tomates cerises", price: "17,00 €" },
-    { name: "Saumon", description: "Crème rosé, mozzarella, saumon, roquette, tomates cerises", price: "17,00 €" }
-  ],
-  pateIntegrale: [
-    { name: "Vegana", description: "Sauce tomates, courgettes, poivrons, artichauts, champignons, roquette, tomates cerises, olives noires", price: "15,00 €", tags: ["Végan"] },
+    { name: "Saumon", description: "Crème rosé, mozzarella, saumon, roquette, tomates cerises", price: "17,00 €" },
     { name: "Straciatella", description: "Crème, mozzarella, jambon blanc, courgettes, stracciatella (fromage frais à pate filée) tomates cerises", price: "17,00 €" },
     { name: "Tartufo Bianco", description: "Créme de truffe blanche, mozzarella, provola di bufala, coppa, parmesan, tomates cerises", price: "18,00 €" }
   ],
@@ -310,7 +305,6 @@ export default function App() {
     { id: 'focacce', label: t.menu.categories.focacce },
     { id: 'pizzeRosse', label: t.menu.categories.pizzeRosse },
     { id: 'pizzeBianche', label: t.menu.categories.pizzeBianche },
-    { id: 'pateIntegrale', label: t.menu.categories.pateIntegrale },
     { id: 'dolci', label: t.menu.categories.dolci },
     { id: 'drinks', label: t.menu.categories.drinks },
   ];
